@@ -1,7 +1,7 @@
 ccargo-features = ["open-namespaces"]
 [package]
 name = "kourain_core"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2024"
 authors = ["kourain <maiquyen16503@gmail.com>"]
 license = "MIT OR Apache-2.0"

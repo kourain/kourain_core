@@ -1,4 +1,4 @@
 mod bitwise;
 mod string;
-pub use bitwise::Bitwise;
-pub use string::to_slug;
+pub use bitwise::*;
+pub use string::*;
