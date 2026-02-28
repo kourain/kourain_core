@@ -1,0 +1,8 @@
+ccargo-features = ["open-namespaces"]
+[package]
+name = "kourain_core"
+version = "1.0.1"
+edition = "2024"
+
+[dependencies]
+regex = "1"
