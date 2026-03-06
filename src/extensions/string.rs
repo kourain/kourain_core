@@ -4,6 +4,7 @@ pub trait ToSlug {
     fn to_slug_with_spliter(&self, spliter: char) -> String;
     fn to_slug_with_cv_spec(&self, cv_spec: bool) -> String;
     fn to_slug_full(&self, spliter: char, cv_spec: bool) -> String;
+    fn sub_string(&self, start: usize, size: usize) -> String;
 }
 
 impl ToSlug for &str {
@@ -19,6 +20,9 @@ impl ToSlug for &str {
     fn to_slug_full(&self, spliter: char, cv_spec: bool) -> String {
         to_slug_full(self, Some(spliter), Some(cv_spec))
     }
+    fn sub_string(&self, start: usize, size: usize) -> String {
+        self.chars().skip(start).take(size).collect()
+    }
 }
 impl ToSlug for String {
     fn to_slug(&self) -> String {
@@ -32,6 +36,9 @@ impl ToSlug for String {
     }
     fn to_slug_full(&self, spliter: char, cv_spec: bool) -> String {
         to_slug_full(self, Some(spliter), Some(cv_spec))
+    }
+    fn sub_string(&self, start: usize, size: usize) -> String {
+        self.chars().skip(start).take(size).collect()
     }
 }
 
