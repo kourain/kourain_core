@@ -56,6 +56,7 @@ fn to_slug_full(input: &str, spliter: Option<char>, cv_spec: Option<bool>) -> St
     let re_y = Regex::new(r"ý|ỳ|ỷ|ỹ|ỵ").unwrap();
     let re_d = Regex::new(r"đ").unwrap();
     let re_space = Regex::new(r"\s+").unwrap();
+    let re_spec = Regex::new(r"-+").unwrap();
     let mut source = input.trim().to_lowercase().to_string();
     source = re_a.replace_all(&source, "a").to_string();
     source = re_e.replace_all(&source, "e").to_string();
@@ -65,6 +66,9 @@ fn to_slug_full(input: &str, spliter: Option<char>, cv_spec: Option<bool>) -> St
     source = re_y.replace_all(&source, "y").to_string();
     source = re_d.replace_all(&source, "d").to_string();
     source = re_space
+        .replace_all(&source, &spliter.unwrap_or('-').to_string())
+        .to_string();
+    source = re_spec
         .replace_all(&source, &spliter.unwrap_or('-').to_string())
         .to_string();
     // Xóa các ký tự đặc biệt
