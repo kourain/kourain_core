@@ -4,13 +4,12 @@ pub struct BinaryBuilder {
 }
 
 impl BinaryBuilder {
+    /// create a new BinaryBuilder with an empty buffer
     pub fn new() -> Self {
-        Self {
-            buffer: Vec::new(),
-            is_little_endian: true,
-        }
+        return Self::with_capacity(256);
     }
 
+    /// create a BinaryBuilder with a pre-allocated capacity
     pub fn with_capacity(capacity: usize) -> Self {
         Self {
             buffer: Vec::with_capacity(capacity),
@@ -19,7 +18,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
-    /// return position of the first byte of the data
+    /// push raw bytes, return the position of the first byte
     pub fn push(&mut self, data: &[u8]) -> usize {
         let pos = self.buffer.len();
         self.buffer.extend_from_slice(data);
@@ -27,6 +26,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a u8 value, return the position of the byte
     pub fn push_u8(&mut self, value: u8) -> usize {
         let pos = self.buffer.len();
         self.buffer.push(value);
@@ -34,6 +34,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a u16 value, return the position of the first byte
     pub fn push_u16(&mut self, value: u16) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -44,6 +45,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a u32 value, return the position of the first byte
     pub fn push_u32(&mut self, value: u32) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -54,6 +56,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a u64 value, return the position of the first byte
     pub fn push_u64(&mut self, value: u64) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -64,11 +67,13 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a i8 value, return the position of the byte
     pub fn push_i8(&mut self, value: i8) -> usize {
         self.push_u8(value as u8)
     }
 
     #[inline]
+    /// push a i16 value, return the position of the first byte
     pub fn push_i16(&mut self, value: i16) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -79,6 +84,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a i32 value, return the position of the first byte
     pub fn push_i32(&mut self, value: i32) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -89,6 +95,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a i64 value, return the position of the first byte
     pub fn push_i64(&mut self, value: i64) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -99,6 +106,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a f32 value, return the position of the first byte
     pub fn push_f32(&mut self, value: f32) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -109,6 +117,7 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a f64 value, return the position of the first byte
     pub fn push_f64(&mut self, value: f64) -> usize {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
@@ -119,13 +128,14 @@ impl BinaryBuilder {
     }
 
     #[inline]
+    /// push a string with its length as a u32 prefix, return the position of the length prefix
     pub fn push_string(&mut self, value: &str) -> usize {
         let pos = self.push_u32(value.len() as u32);
         self.buffer.extend_from_slice(value.as_bytes());
         pos
     }
 
-    /// Ghi đè tại vị trí byte đã biết (thay thế drop_at)
+    /// overwrite a u32 value at the given position
     pub fn patch_u32(&mut self, pos: usize, value: u32) {
         let bytes = if self.is_little_endian {
             value.to_le_bytes()
